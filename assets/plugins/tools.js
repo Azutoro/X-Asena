@@ -1,11 +1,19 @@
-const { command, qrcode, Bitly, isUrl, readQr } = require("../../lib/");
+const {
+  command,
+  qrcode,
+  Bitly,
+  isPrivate,
+  isUrl,
+  readQr,
+} = require("../../lib/");
 
 const { downloadMediaMessage } = require("@whiskeysockets/baileys");
 const { getLyrics } = require("../../lib/functions");
+const config = require("../../config");
 command(
   {
     pattern: "vv",
-    fromMe: true,
+    fromMe: isPrivate,
     desc: "Forwards The View once messsage",
     type: "tool",
   },
@@ -19,7 +27,7 @@ command(
 command(
   {
     on: "text",
-    fromMe: true,
+    fromMe: !config.STATUS_SAVER,
     desc: "Save or Give Status Updates",
     dontAddCommandList: true,
     type: "Tool",
@@ -46,7 +54,7 @@ command(
 command(
   {
     pattern: "qr",
-    fromMe: true,
+    fromMe: isPrivate,
     desc: "Read/Write Qr.",
     type: "Tool",
   },
@@ -78,7 +86,7 @@ command(
 command(
   {
     pattern: "bitly",
-    fromMe: true,
+    fromMe: isPrivate,
     desc: "Converts Url to bitly",
     type: "tool",
   },
@@ -94,7 +102,7 @@ command(
 command(
   {
     pattern: "lyric",
-    fromMe: true,
+    fromMe: isPrivate,
     desc: "Searches for lyrics based on the format: song;artist",
     type: "tools",
   },

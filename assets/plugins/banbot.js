@@ -4,7 +4,7 @@ const { banUser, unbanUser, isBanned } = require("../database/ban");
 command(
   {
     on: "message",
-    fromMe: isPrivate,
+    fromMe: true,
     dontAddCommandList: true,
   },
   async (message, match) => {
@@ -13,14 +13,18 @@ command(
     if (!isban) return;
     await message.reply("_Bot is banned in this chat_");
     const jid = parsedJid(message.participant);
-    await message.client.groupParticipantsUpdate(message.jid, jid, "remove");
+    return await message.client.groupParticipantsUpdate(
+      message.jid,
+      jid,
+      "remove"
+    );
   }
 );
 
 command(
   {
     pattern: "banbot",
-    fromMe: isPrivate,
+    fromMe: true,
     desc: "ban bot from a chat",
     type: "",
   },
@@ -38,7 +42,7 @@ command(
 command(
   {
     pattern: "unbanbot",
-    fromMe: isPrivate,
+    fromMe: true,
     desc: "Unban bot from a chat",
     type: "user",
   },

@@ -1,7 +1,8 @@
-const { command, isAdmin ,parsedJid} = require("../../lib");
+const { command, isAdmin, parsedJid } = require("../../lib");
 const { exec } = require("child_process");
 const { PausedChats, WarnDB } = require("../database");
 const { WARN_COUNT } = require("../../config");
+const { secondsToDHMS } = require("../../lib/functions");
 const { saveWarn, resetWarn } = WarnDB;
 
 command(
@@ -23,7 +24,7 @@ command(
   }
 );
 
- command(
+command(
   {
     pattern: "shutdown",
     fromMe: true,
@@ -71,7 +72,7 @@ command(
 
 command(
   {
-    pattern: "setpp ",
+    pattern: "setpp",
     fromMe: true,
     desc: "Set profile picture",
     type: "user",
@@ -111,12 +112,9 @@ command(
       let jid = message.mention[0] || message.reply_message.jid;
       if (!jid) return await message.reply("_Reply to a person or mention_");
       await message.block(jid);
-      return await message.sendMessage(
-        `_@${jid.split("@")[0]} Blocked_`,
-        {
-          mentions: [jid],
-        }
-      );
+      return await message.sendMessage(`_@${jid.split("@")[0]} Blocked_`, {
+        mentions: [jid],
+      });
     } else {
       await message.block(message.jid);
       return await message.reply("_User blocked_");
@@ -164,7 +162,6 @@ command(
     );
   }
 );
-
 
 command(
   {
@@ -234,5 +231,17 @@ command(
         mentions: [userId],
       }
     );
+  }
+);
+
+command(
+  {
+    pattern: "uptime",
+    fromMe: true,
+    desc: "Check uptime of bot",
+    type: "user",
+  },
+  async (message, match) => {
+    message.reply(`*Uptime:* ${secondsToDHMS(process.uptime())}`);
   }
 );
